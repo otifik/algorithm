@@ -8,6 +8,6 @@
 
 !*.cpp
 
-/Algorithm Template
+/Algorithm Template/*
 
 !/Algorithm Template/*.cpp
