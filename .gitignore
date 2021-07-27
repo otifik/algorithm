@@ -1,6 +1,9 @@
-#忽略/.vscode
 /.vscode
 
 *.exe
 
 /test
+
+10*
+
+!*.cpp
