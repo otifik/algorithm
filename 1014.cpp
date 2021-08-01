@@ -34,6 +34,7 @@ int dayTime = 480;
 int n,m,k,q;
 int id;
 int flag;
+int flagTemp;
 int main(){
     cin>>n>>m>>k>>q;
     for(int i=1;i<=k;i++){
@@ -43,7 +44,6 @@ int main(){
         customer[i].processTime=customer[i].leftTime;
         custQue.push(customer[i]);
     }
-    //ok初始化
     while(que[n-1].size()!=m&&!custQue.empty()){
         for(int i=0;i<n;i++){
             if(!custQue.empty()){
@@ -55,32 +55,38 @@ int main(){
             }
         }
     }
-    //ok业务逻辑
     while(1){
         flag=0;
-        //找出最小值
         int minn=inf;
         for(int i=0;i<n;i++){
             if(!que[i].empty()&&que[i].front().leftTime<minn){
                 minn=que[i].front().leftTime;
             }
         }
+        if(dayTime>=1020){
+            flagTemp=1;
+        }
         dayTime+=minn;
-        
-        //pop最小值
         for(int i=0;i<n;i++){
             if(!que[i].empty()){
-                if(que[i].front().leftTime==minn){
-                    customer[que[i].front().id].endTime=dayTime;
-                    //逻辑问题
-                    que[i].pop();
+                if(!flagTemp){
+                    if(que[i].front().leftTime==minn){
+                        customer[que[i].front().id].endTime=dayTime;
+                        que[i].pop();
+                    }else {
+                        que[i].front().leftTime-=minn;
+                    }
                 }else {
-                    que[i].front().leftTime-=minn;
+                    if(que[i].front().processTime!=que[i].front().leftTime){
+                        customer[que[i].front().id].endTime=dayTime;
+                        que[i].pop();
+                    }else {
+                        customer[que[i].front().id].state=1;
+                        que[i].pop();
+                    }
                 }
             }
         }
-
-        //补全que队列
         for(int i=0;i<n;i++){
             if(que[i].size()!=m&&!custQue.empty()){
                 struct node cust = custQue.front();
@@ -88,8 +94,6 @@ int main(){
                 que[i].push(cust);
             }
         }
-
-        //判断是否完成业务
         for(int i=0;i<n;i++){
             if(!que[i].empty()){
                 flag=1;
@@ -99,8 +103,6 @@ int main(){
             break;
         }
     }
-
-    //绝对没问题
     int hour,minute;
     for(int i=0;i<q;i++){
         cin>>id;
