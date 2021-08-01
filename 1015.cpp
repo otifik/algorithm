@@ -34,7 +34,6 @@ int main(){
         for(int i=0;i<cnt;i++){
             reverseNum=r*reverseNum+a[i];
         }
-        cout<<reverseNum<<endl;
         if(prime(n)&&prime(reverseNum)){
             cout<<"Yes"<<endl;
         }else {
