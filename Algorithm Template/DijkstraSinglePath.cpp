@@ -3,7 +3,7 @@
 #include<stack>
 #define inf 0x3f3f3f3f
 using namespace std;
-int path[1010],dis[1010],vis[1010],e[1010][1010];
+int pre[1010],dis[1010],vis[1010],e[1010][1010];
 int n,m;
 void dijkstra(int start,int n){
     dis[start]=0;
@@ -21,28 +21,23 @@ void dijkstra(int start,int n){
         vis[u]=1;
         for(int v=0;v<n;v++){
             if(!vis[v]&&e[u][v]!=inf&&dis[u]+e[u][v]<dis[v]){
-                path[v]=u;
+                pre[v]=u;
                 dis[v]=dis[u]+e[u][v];
             }
         }
     }
 }
-void print(int start,int dest){
-    stack<int> s;
-    while(path[dest]!=start){
-        s.push(dest);
-        dest=path[dest];
+void dfs(int start,int dest){
+    if(dest==start){
+        cout<<start;
+        return ;
     }
-    s.push(dest);
-    s.push(start);
-    while(!s.empty()){
-        printf("%d ",s.top());
-        s.pop();
-    }
+    dfs(start,pre[dest]);
+    cout<<"->"<<dest;
 }
 int main(){
     cin>>n>>m;
-    memset(path,-1,sizeof(path));
+    memset(pre,-1,sizeof(pre));
     memset(e,inf,sizeof(e));
     memset(dis,inf,sizeof(dis));
     int u,v,w;
@@ -52,7 +47,7 @@ int main(){
         //e[v][u]=w    无向图
     }
     dijkstra(0,n);
-    print(0,5);
+    dfs(0,5);
     return 0;
 }
 
