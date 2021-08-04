@@ -1,58 +1,48 @@
 #include<iostream>
 #include<algorithm>
-#include<queue>
-#define inf 0x3f3f3f3f
+#include<vector>
 using namespace std;
-int n,m;
-int num;
 struct node {
+    int come;
     int time;
-    int processTime;
-}customer[10010];
-int h,minute,s;
-bool cmp (struct node a,struct node b){
-    return a.time<b.time;
+}tempCust;
+bool cmp(struct node a,struct node b){
+    return a.come<b.come;
 }
-int waitTime,sum;
-queue<struct node> que[110];
-queue<struct node> cust;
+int n,k;
+vector<node> cust;
 int main(){
-    cin>>n>>m;
+    cin>>n>>k;
     for(int i=0;i<n;i++){
-        scanf("%d:%d:%d",&h,&minute,&s);
-        customer[i].time=h*3600+minute*60+s;
-        cin>>customer[i].processTime;
+        int h,m,s,t;
+        scanf("%d:%d:%d %d",&h,&m,&s,&t);
+        int cometime = h*3600+m*60+s;
+        if(cometime>61200) continue;
+        tempCust = {cometime,t*60};
+        cust.push_back(tempCust);
     }
-    sort(customer,customer+n,cmp);
-    for(int i=0;i<n;i++){
-        if(customer[i].time<=61200){
-            cust.push(customer[i]);
-            num++;
+    sort(cust.begin(),cust.end(),cmp);
+    vector<int> window(k,28800);
+    double res = 0.0;
+    for(int i=0;i<cust.size();i++){
+        int tempIndex=0,minFinish=window[0];
+        for(int j=1;j<k;j++){
+            if(minFinish>window[j]){
+                minFinish = window[j];
+                tempIndex = j;
+            }
+        }
+        if(window[tempIndex]<=cust[i].come){
+            window[tempIndex]=cust[i].come + cust[i].time;
+        }else {
+            res+=(window[tempIndex]-cust[i].come);
+            window[tempIndex]+=cust[i].time;
         }
     }
-    for(int i=0;i<m;i++){
-        if(!cust.empty()){
-            struct node temp = cust.front();
-            cust.pop();
-            que[i].push(temp);
-        }
-    }
-    while(!cust.empty()){
-        
+    if(cust.size()==0){
+        printf("0.0");
+    }else {
+        printf("%.1f",res/60/cust.size());
     }
     return 0;
 }
-//处理时间大于17.
-
-
-
-07:55:00 16
-07:59:59 15
-08:00:00 30
-08:00:02 2
-08:01:00 60
-08:03:00 10
-17:00:01 2
-
-
-
