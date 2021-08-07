@@ -20,10 +20,11 @@ bool cmp2(person a, person b) {
 vector<person> player;
 vector<tablenode> table;
 void alloctable(int personid, int tableid) {
-    if(player[personid].arrive <= table[tableid].end)
+    if(player[personid].arrive <= table[tableid].end)//来早了
         player[personid].start = table[tableid].end;
-    else
+    else//来晚了
         player[personid].start = player[personid].arrive;
+        
     table[tableid].end = player[personid].start + player[personid].time;
     table[tableid].num++;
 }
