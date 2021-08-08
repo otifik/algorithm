@@ -6,7 +6,7 @@ using namespace std;
 vector<int> pre[1010];
 int dis[1010],vis[1010],e[1010][1010];
 int n,m;
-void dijkstra(int start,int n){
+void dijkstra(int start){
     dis[start]=0;
     for(int i=0;i<n;i++){
         int u=-1,min=inf;
@@ -58,7 +58,7 @@ int main(){
         e[u][v]=w;//   有向图
         //e[v][u]=w    无向图
     }
-    dijkstra(0,n);
+    dijkstra(0);
     //dfs
     return 0;
 }
