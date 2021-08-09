@@ -38,7 +38,7 @@ int main(){
                 nowprice = station[i].price;
                 nowdis = station[i].dis;
                 flag=1;
-                continue;
+                break;
             }//找到了比当前油价更低的加油站，直接过去，下面的就不用执行
             if(station[i].price<minPrice){
                 minPrice = station[i].price;
