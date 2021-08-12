@@ -1,55 +1,79 @@
 #include<iostream>
-#include<utility>
-#include<vector>
 using namespace std;
-int n,payment;
-int value[100005];
-struct node {
-    int front,tail;
-    int sum;
-}tempNode;
-vector<node> vec;
-vector<node> minVec;
+int n,m,sum[100005];
+int first=0,minDif = 0x3f3f3f3f;
+bool isFind = false;
 int main(){
-    cin>>n>>payment;
-    for(int i=0;i<n;i++){
-        cin>>value[i];
-    }
-    for(int i=0;i<n;i++){
-        int start=i;
-        int sum=0;
-        for(int j=start;j<n;j++){
-            sum+=value[j];
-            if(sum==payment){
-                tempNode.front=i+1;
-                tempNode.tail=j+1;
-                vec.push_back(tempNode);
-                break;
-            }
-            if(sum>payment){
-                tempNode.front=i+1;
-                tempNode.tail=j+1;
-                tempNode.sum=sum;
-                if(minVec.empty()){
-                    minVec.push_back(tempNode);
-                }else if(!minVec.empty()&&sum<minVec[0].sum){
-                    minVec.clear();
-                    minVec.push_back(tempNode);
-                }else if(!minVec.empty()&&sum==minVec[0].sum){
-                    minVec.push_back(tempNode);
-                }
-                break;
-            }
+    cin>>n>>m;
+    for(int i=1;i<=n;i++){
+        cin>>sum[i];
+        sum[i]+=sum[i-1];
+        while(sum[i]-sum[first]>m){
+            minDif = min(minDif,sum[i]-sum[first]);
+            first++;
+        }
+        if(sum[i]-sum[first]==m){
+            cout<<first+1<<"-"<<i<<endl;
+            isFind=true;
         }
     }
-    if(!vec.empty()){
-        for(int i=0;i<vec.size();i++){
-            cout<<vec[i].front<<"-"<<vec[i].tail<<endl;
-        }
-    }else {
-        for(int i=0;i<minVec.size();i++){
-            cout<<minVec[i].front<<"-"<<minVec[i].tail<<endl;
+    if(!isFind){
+        int j=0;
+        for(int i=1;i<=n;i++){
+            while(sum[i]-sum[j]>minDif){
+                j++;
+            }
+            if(sum[i]-sum[j]==minDif){
+                cout<<j+1<<"-"<<i<<endl;
+            }
         }
     }
     return 0;
 }
+
+
+/*柳神代码，二分查找*/
+// #include<iostream>
+// #include<vector>
+// using namespace std;
+// vector<int> sum,resultArr;
+// int n,m;
+// void fun(int i,int &j,int &tempsum){
+//     int left = i,right = n;
+//     while(left<right){
+//         int mid = (left+right)/2;
+//         if(sum[mid]-sum[i-1]>=m){
+//             right = mid;
+//         }else {
+//             left = mid + 1;
+//         }
+//     }
+//     j=right;
+//     tempsum=sum[j]-sum[i-1];
+// }
+// int main(){
+//     cin>>n>>m;
+//     sum.resize(n+1);
+//     for(int i=1;i<=n;i++){
+//         cin>>sum[i];
+//         sum[i]+=sum[i-1];
+//     }
+//     int minans=sum[n];//表示的是我最少一共拿出多少钱
+//     for(int i=1;i<=n;i++){
+//         int j,tempsum;
+//         fun(i,j,tempsum);
+//         if(tempsum>minans) continue;
+//         if(tempsum>=m){
+//             if(tempsum<minans){
+//                 resultArr.clear();
+//                 minans=tempsum;
+//             }
+//             resultArr.push_back(i);
+//             resultArr.push_back(j);
+//         }
+//     }
+//     for(int i = 0; i < resultArr.size(); i += 2){
+//         printf("%d-%d\n", resultArr[i], resultArr[i+1]);
+//     }
+//     return 0;
+// }
