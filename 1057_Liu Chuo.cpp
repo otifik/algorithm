@@ -1,3 +1,9 @@
+/*
+设立一个Count[100005]。插入n的 时候Count[n]++，删除的时候Count[n]--，
+查找的时候遍历数组，寻找前缀和为（size+1)/2的下标。
+题目解法：用一个c数组来存放push进去的数字出现的个数，
+要求中位数，就相当于求c数组中前i个数的和sum使得sum≥(n+1)/2
+*/
 #include <cstdio>
 #include <stack>
 #define lowbit(i) ((i) & (-i))
@@ -24,7 +30,7 @@ void PeekMedian() {
         else
             left = mid + 1;
     }
-    printf("%d\n", left);
+    printf("%d\n", right);
 }
 int main() {
     int n, temp;
