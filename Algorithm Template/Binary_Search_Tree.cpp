@@ -16,6 +16,26 @@ Position Find( BinTree BST, ElementType X );
 Position FindMin( BinTree BST );
 Position FindMax( BinTree BST );
 
+void del(BinTree BST,ElementType X){//可能会有内存溢出
+	BinTree node = Find(BST,X);
+	if(node->Left&&node->Right){
+		BinTree t = node->Right;
+		BinTree parent = NULL;
+		while(t->Left){
+			parent = t;
+			t = t->Left;
+		}
+		node->Data = t->Data;
+		parent->Left=NULL;
+	}else{
+		if(node->Left){
+			node = node->Left;
+		}else {
+			node = node->Right;
+		}
+	}
+}
+
 int main()
 {
     BinTree BST, MinP, MaxP, Tmp;
@@ -44,7 +64,7 @@ int main()
     scanf("%d", &N);
     for( i=0; i<N; i++ ) {
         scanf("%d", &X);
-        BST = Delete(BST, X);
+        del(BST,X);
     }
 
     return 0;
@@ -101,9 +121,9 @@ BinTree Delete(BinTree BST,ElementType X){
 			BST->Right=Delete(BST->Right,X);
 		}else {
 			if(BST->Left&&BST->Right){
-				BinTree t = FindMin(BST->Right);
+				BinTree t = FindMin(BST->Right);//找右右子树最小来替换被删除节点的数据
 				BST->Data = t->Data;
-				BST->Right = Delete(BST->Right,t->Data);
+				BST->Right = Delete(BST->Right,t->Data);//删除那个右子树最小的节点
 			}else{
 				if(BST->Left){
 					BST = BST->Left;
