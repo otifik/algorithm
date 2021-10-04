@@ -12,7 +12,7 @@ Dijkstra：1003，
 
 DijkstraMulti：1018，1030
 
-图（dfs）：1034，
+图（dfs）：1034，1087
 
 图（bfs）：1076，
 
